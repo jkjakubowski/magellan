@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  @apply border-white/10;
+}
+
+body {
+  @apply bg-magellan-smoky text-[#EEE] antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid theme("colors.magellan.glaucous");
+  outline-offset: 2px;
+}
+
+.ink-label {
+  @apply relative inline-flex items-center;
+  animation: ink-glow 3.2s ease-in-out infinite;
+}
+
+.caret-animate {
+  caret-color: theme("colors.magellan.glaucous");
+}
+
+.typing-indicator span {
+  @apply inline-block h-2 w-2 rounded-full bg-magellan-glaucous;
+  animation: typing-dots 1.2s ease-in-out infinite;
+}
+
+.typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+.glass-card {
+  @apply bg-magellan-delft/90 backdrop-blur rounded-3xl shadow-lg border border-white/5;
+}
