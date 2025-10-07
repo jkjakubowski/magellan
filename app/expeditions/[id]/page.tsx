@@ -70,7 +70,7 @@ export default async function ExpeditionPage({ params }: Props) {
             </p>
             {trip.safety_flags.length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {trip.safety_flags.map((flag) => (
+                {trip.safety_flags.map((flag: string) => (
                   <Badge
                     key={flag}
                     variant="outline"
