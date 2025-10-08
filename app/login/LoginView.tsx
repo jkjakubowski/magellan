@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getSupabaseBrowserClient, type BrowserSupabaseClient } from "@/lib/supabaseClient";
+import { useSupabaseBrowser } from "@/lib/supabaseClient";
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +21,7 @@ type LoginForm = {
 export function LoginView() {
   const router = useRouter();
   const { t } = useTranslation();
-  const supabase = useMemo<BrowserSupabaseClient | null>(() => getSupabaseBrowserClient(), []);
+  const supabase = useSupabaseBrowser();
   const schema = useMemo(
     () =>
       z.object({
@@ -50,6 +50,14 @@ export function LoginView() {
 
   const onSubmit = async (data: LoginForm) => {
     setLoading(true);
+    if (!supabase) {
+      toast({
+        title: t("auth.supabaseMissing"),
+        variant: "error"
+      });
+      setLoading(false);
+      return;
+    }
     const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password
@@ -74,6 +82,13 @@ export function LoginView() {
   };
 
   const sendMagicLink = async (email: string) => {
+    if (!supabase) {
+      toast({
+        title: t("auth.supabaseMissing"),
+        variant: "error"
+      });
+      return;
+    }
     if (!email) {
       toast({
         title: t("toasts.magicLinkMissingTitle"),

@@ -1,27 +1,88 @@
+import { useEffect, useState } from "react";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export type BrowserSupabaseClient = ReturnType<typeof createClientComponentClient>;
 
 let client: BrowserSupabaseClient | null = null;
+let initPromise: Promise<BrowserSupabaseClient> | null = null;
 
-export const getSupabaseBrowserClient = (): BrowserSupabaseClient | null => {
-  if (client) return client;
-  if (typeof window === "undefined") {
-    return null;
-  }
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key) {
-    if (process.env.NODE_ENV !== "production") {
-      console.warn(
-        "Supabase client requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables."
-      );
+const resolveSupabaseEnv = async (): Promise<{
+  supabaseUrl: string;
+  supabaseAnonKey: string;
+}> => {
+  let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  let supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    const response = await fetch("/api/public-env");
+    if (!response.ok) {
+      throw new Error("Unable to retrieve Supabase configuration from the server.");
     }
-    return null;
+    const data = await response.json();
+    supabaseUrl = data.supabaseUrl;
+    supabaseAnonKey = data.supabaseAnonKey;
   }
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error("Supabase environment variables are missing.");
+  }
+
+  return { supabaseUrl, supabaseAnonKey };
+};
+
+const createBrowserClient = async (): Promise<BrowserSupabaseClient> => {
+  if (client) return client;
+  const { supabaseUrl, supabaseAnonKey } = await resolveSupabaseEnv();
   client = createClientComponentClient({
-    supabaseUrl: url,
-    supabaseKey: key
+    supabaseUrl,
+    supabaseKey: supabaseAnonKey
   });
   return client;
+};
+
+export const ensureSupabaseBrowserClient = async (): Promise<BrowserSupabaseClient> => {
+  if (client) return client;
+  if (!initPromise) {
+    initPromise = createBrowserClient().catch((error) => {
+      initPromise = null;
+      throw error;
+    });
+  }
+  return initPromise;
+};
+
+export const getSupabaseBrowserClient = (): BrowserSupabaseClient | null => client;
+
+export const useSupabaseBrowser = (): BrowserSupabaseClient | null => {
+  const [instance, setInstance] = useState<BrowserSupabaseClient | null>(client);
+
+  useEffect(() => {
+    if (client) {
+      setInstance(client);
+      return;
+    }
+
+    let isMounted = true;
+
+    ensureSupabaseBrowserClient()
+      .then((supabaseClient) => {
+        if (isMounted) {
+          setInstance(supabaseClient);
+        }
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV !== "production") {
+          console.error("Failed to initialise Supabase client", error);
+        }
+        if (isMounted) {
+          setInstance(null);
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return instance;
 };

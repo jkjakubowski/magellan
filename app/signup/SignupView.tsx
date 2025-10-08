@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getSupabaseBrowserClient, type BrowserSupabaseClient } from "@/lib/supabaseClient";
+import { useSupabaseBrowser } from "@/lib/supabaseClient";
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +22,7 @@ type SignupForm = {
 export function SignupView() {
   const router = useRouter();
   const { t } = useTranslation();
-  const supabase = useMemo<BrowserSupabaseClient | null>(() => getSupabaseBrowserClient(), []);
+  const supabase = useSupabaseBrowser();
   const schema = useMemo(
     () =>
       z
@@ -56,6 +56,14 @@ export function SignupView() {
 
   const onSubmit = async (form: SignupForm) => {
     setLoading(true);
+    if (!supabase) {
+      toast({
+        title: t("auth.supabaseMissing"),
+        variant: "error"
+      });
+      setLoading(false);
+      return;
+    }
     try {
       const { data, error } = await supabase.auth.signUp({
         email: form.email,
