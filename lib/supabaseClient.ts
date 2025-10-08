@@ -10,18 +10,12 @@ const resolveSupabaseEnv = async (): Promise<{
   supabaseUrl: string;
   supabaseAnonKey: string;
 }> => {
-  let supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  let supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    const response = await fetch("/api/public-env");
-    if (!response.ok) {
-      throw new Error("Unable to retrieve Supabase configuration from the server.");
-    }
-    const data = await response.json();
-    supabaseUrl = data.supabaseUrl;
-    supabaseAnonKey = data.supabaseAnonKey;
+  const response = await fetch("/api/public-env");
+  if (!response.ok) {
+    throw new Error("Unable to retrieve Supabase configuration from the server.");
   }
+  const data = await response.json();
+  const { supabaseUrl, supabaseAnonKey } = data ?? {};
 
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error("Supabase environment variables are missing.");
@@ -86,3 +80,5 @@ export const useSupabaseBrowser = (): BrowserSupabaseClient | null => {
 
   return instance;
 };
+
+export const useSupabaseClient = useSupabaseBrowser;

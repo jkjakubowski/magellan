@@ -78,7 +78,7 @@
     "signupButton": "Mein Konto erstellen",
     "magicLink": "Magic Link senden",
     "magicLinkPrompt": "Gib deine E-Mail ein, um den Magic Link zu erhalten.",
-    "supabaseMissing": "Supabase-Konfiguration fehlt. Bitte setze NEXT_PUBLIC_SUPABASE_URL und NEXT_PUBLIC_SUPABASE_ANON_KEY."
+    "supabaseMissing": "Supabase-Konfiguration fehlt. Bitte setze SUPABASE_URL und SUPABASE_ANON_KEY."
   },
   "toasts": {
     "loginErrorTitle": "Anmeldung fehlgeschlagen",

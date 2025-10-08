@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useSupabaseBrowser } from "@/lib/supabaseClient";
+import { useSupabaseClient } from "@/lib/supabaseClient";
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 
@@ -22,7 +22,7 @@ type SignupForm = {
 export function SignupView() {
   const router = useRouter();
   const { t } = useTranslation();
-  const supabase = useSupabaseBrowser();
+  const supabase = useSupabaseClient();
   const schema = useMemo(
     () =>
       z
