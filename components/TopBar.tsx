@@ -59,6 +59,7 @@ export default function TopBar() {
   }, [pathname, t]);
 
   useEffect(() => {
+    if (!supabase) return;
     let cancelled = false;
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (!cancelled) {
@@ -79,6 +80,7 @@ export default function TopBar() {
   }, [supabase]);
 
   const handleLogout = useCallback(async () => {
+    if (!supabase) return;
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();

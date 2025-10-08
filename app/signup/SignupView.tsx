@@ -22,7 +22,7 @@ type SignupForm = {
 export function SignupView() {
   const router = useRouter();
   const { t } = useTranslation();
-  const supabase = useMemo<BrowserSupabaseClient>(() => getSupabaseBrowserClient(), []);
+  const supabase = useMemo<BrowserSupabaseClient | null>(() => getSupabaseBrowserClient(), []);
   const schema = useMemo(
     () =>
       z
@@ -45,6 +45,14 @@ export function SignupView() {
   } = useForm<SignupForm>({
     resolver: zodResolver(schema)
   });
+
+  if (!supabase) {
+    return (
+      <div className="mx-auto flex w-full max-w-md flex-col gap-6 rounded-3xl border border-white/10 bg-magellan-delft/70 p-10 text-center text-sm text-white/80 shadow-lg backdrop-blur">
+        {t("auth.supabaseMissing")}
+      </div>
+    );
+  }
 
   const onSubmit = async (form: SignupForm) => {
     setLoading(true);

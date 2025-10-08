@@ -4,21 +4,24 @@ export type BrowserSupabaseClient = ReturnType<typeof createClientComponentClien
 
 let client: BrowserSupabaseClient | null = null;
 
-export const getSupabaseBrowserClient = (): BrowserSupabaseClient => {
+export const getSupabaseBrowserClient = (): BrowserSupabaseClient | null => {
   if (client) return client;
   if (typeof window === "undefined") {
-    throw new Error("Supabase client is only available in the browser.");
+    return null;
   }
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) {
-    throw new Error(
-      "Supabase client requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables."
-    );
+    if (process.env.NODE_ENV !== "production") {
+      console.warn(
+        "Supabase client requires NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables."
+      );
+    }
+    return null;
   }
   client = createClientComponentClient({
     supabaseUrl: url,
     supabaseKey: key
   });
-  return client!;
+  return client;
 };

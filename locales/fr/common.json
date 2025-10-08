@@ -77,7 +77,8 @@
     "confirmError": "Les mots de passe ne correspondent pas.",
     "signupButton": "Créer mon compte",
     "magicLink": "Recevoir un lien magique",
-    "magicLinkPrompt": "Entre ton email pour recevoir le lien magique."
+    "magicLinkPrompt": "Entre ton email pour recevoir le lien magique.",
+    "supabaseMissing": "Configuration Supabase manquante. Vérifie les variables NEXT_PUBLIC_SUPABASE_URL et NEXT_PUBLIC_SUPABASE_ANON_KEY."
   },
   "toasts": {
     "loginErrorTitle": "Connexion impossible",
