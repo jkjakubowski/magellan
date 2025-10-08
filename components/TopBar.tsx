@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import type { User } from "@supabase/supabase-js";
 import { useTranslation } from "react-i18next";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -43,6 +43,7 @@ export default function TopBar() {
   const router = useRouter();
   const [user, setUser] = useState<User | null>(null);
   const { t } = useTranslation();
+  const supabase = useMemo(() => getSupabaseBrowserClient(), []);
 
   const title = useMemo(() => {
     if (!pathname) return "Magellan";
