@@ -1,7 +1,4 @@
-import {
-  ToastActionElement,
-  type ToastProps
-} from "@radix-ui/react-toast";
+import { type ToastProps } from "@radix-ui/react-toast";
 import * as React from "react";
 
 const TOAST_LIMIT = 1;
@@ -11,7 +8,7 @@ type ToasterToast = ToastProps & {
   id: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
-  action?: ToastActionElement;
+  action?: React.ReactNode;
   variant?: "default" | "success" | "error" | "warning";
 };
 

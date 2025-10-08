@@ -51,7 +51,7 @@ export default async function ExpeditionPage({ params }: Props) {
   return (
     <div className="flex flex-col gap-10">
       <section className="grid gap-6 lg:grid-cols-[2fr,1fr]">
-        <Card>
+        <Card className="rounded-3xl border border-white/10 bg-magellan-delft/50 shadow-lg backdrop-blur">
           <CardHeader>
             <CardTitle className="text-2xl">{trip.intention}</CardTitle>
             <CardDescription className="flex items-center gap-2 text-sm text-white/70">

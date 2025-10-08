@@ -2,13 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  Compass,
-  LogOut,
-  Menu,
-  Settings,
-  User
-} from "lucide-react";
+import { Compass, LogOut, Menu, Settings, User as UserIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -140,7 +134,7 @@ export default function TopBar() {
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" className="gap-2 px-4">
                 <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-white">
-                  <User className="h-4 w-4" />
+                  <UserIcon className="h-4 w-4" />
                 </div>
                 <span className="hidden text-sm font-semibold sm:flex">
                   {user.email ?? t("topbar.guest")}
