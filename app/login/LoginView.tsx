@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
+import { getSupabaseBrowserClient, type BrowserSupabaseClient } from "@/lib/supabaseClient";
 import { toast } from "@/components/ui/use-toast";
 import { useTranslation } from "react-i18next";
 
@@ -21,7 +21,7 @@ type LoginForm = {
 export function LoginView() {
   const router = useRouter();
   const { t } = useTranslation();
-  const supabase = useMemo(() => getSupabaseBrowserClient(), []);
+  const supabase = useMemo<BrowserSupabaseClient>(() => getSupabaseBrowserClient(), []);
   const schema = useMemo(
     () =>
       z.object({

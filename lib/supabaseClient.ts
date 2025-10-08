@@ -1,10 +1,10 @@
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
-import type { SupabaseClient } from "@supabase/supabase-js";
+export type BrowserSupabaseClient = ReturnType<typeof createClientComponentClient>;
 
-let client: SupabaseClient | null = null;
+let client: BrowserSupabaseClient | null = null;
 
-export const getSupabaseBrowserClient = () => {
+export const getSupabaseBrowserClient = (): BrowserSupabaseClient => {
   if (client) return client;
   if (typeof window === "undefined") {
     throw new Error("Supabase client is only available in the browser.");
@@ -20,5 +20,5 @@ export const getSupabaseBrowserClient = () => {
     supabaseUrl: url,
     supabaseKey: key
   });
-  return client;
+  return client!;
 };

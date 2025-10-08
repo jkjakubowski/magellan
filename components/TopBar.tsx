@@ -76,13 +76,13 @@ export default function TopBar() {
       cancelled = true;
       subscription.unsubscribe();
     };
-  }, []);
+  }, [supabase]);
 
   const handleLogout = useCallback(async () => {
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();
-  }, [router]);
+  }, [router, supabase]);
 
   return (
     <header className="sticky top-0 z-40 flex h-20 items-center justify-between border-b border-white/5 bg-magellan-smoky/80 px-4 backdrop-blur lg:px-10">
