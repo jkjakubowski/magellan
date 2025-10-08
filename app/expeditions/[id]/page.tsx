@@ -15,6 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PDFButton from "@/components/PDFButton";
 import { getServerTranslation } from "@/lib/i18n/server";
 
+export const dynamic = "force-dynamic";
+
 interface Props {
   params: { id: string };
 }

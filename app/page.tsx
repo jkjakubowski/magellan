@@ -5,6 +5,8 @@ import PDFButton from "@/components/PDFButton";
 import { getServerTranslation } from "@/lib/i18n/server";
 import type { TFunction } from "i18next";
 
+export const dynamic = "force-dynamic";
+
 interface DashboardContentProps {
   t: TFunction;
   locale: string;

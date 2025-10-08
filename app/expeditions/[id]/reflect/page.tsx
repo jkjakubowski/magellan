@@ -7,6 +7,8 @@ import ReflectForm from "./ReflectForm";
 import { getServerTranslation } from "@/lib/i18n/server";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 type Phase = "T24" | "T72" | "T14";
 
 interface Props {

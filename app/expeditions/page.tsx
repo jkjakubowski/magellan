@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { getServerTranslation } from "@/lib/i18n/server";
 import type { TFunction } from "i18next";
 
+export const dynamic = "force-dynamic";
+
 function EmptyState({ t }: { t: TFunction }) {
   return (
     <div className="glass-card p-10 text-white/60">

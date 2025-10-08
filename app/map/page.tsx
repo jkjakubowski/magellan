@@ -9,6 +9,8 @@ import {
 } from "@/components/ui/card";
 import { getServerTranslation } from "@/lib/i18n/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function MapPage() {
   const [tags, trips] = await Promise.all([
     listTags().catch(() => []),
